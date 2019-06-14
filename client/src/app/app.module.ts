@@ -8,14 +8,10 @@ import {HttpClientModule} from '@angular/common/http';
 
 import {AngularFireAuthModule} from '@angular/fire/auth';
 import {AngularFireDatabaseModule} from '@angular/fire/database';
+import {SocketIoModule, SocketIoConfig} from 'ngx-socket-io';
+import {environment} from '../environments/environment';
 
-export const firebaseConfig = {
-  apiKey: 'AIzaSyDAdKZjuUnWjwenjUxMmUrUd1LKjd7CIBE',
-  authDomain: 'chat-b4481.firebaseapp.com',
-  databaseURL: 'https://chat-b4481.firebaseio.com',
-  storageBucket: 'chat-b4481.appspot.com',
-  messagingSenderId: '340860809598'
-};
+const config: SocketIoConfig = {url: 'http://localhost:4444', options: {}};
 
 @NgModule({
   declarations: [
@@ -26,7 +22,8 @@ export const firebaseConfig = {
     AngularFireModule,
     FormsModule,
     HttpClientModule,
-    AngularFireModule.initializeApp(firebaseConfig),
+    SocketIoModule.forRoot(config),
+    AngularFireModule.initializeApp(environment),
     AngularFireAuthModule,
     AngularFireDatabaseModule,
   ],

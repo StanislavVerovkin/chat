@@ -1,0 +1,11 @@
+<div class="row columns">
+
+  <input type="text" id="message" placeholder="Chat here..." (keyup.enter)="chatSend($event.target.value)"
+         [(ngModel)]="msgVal"/>
+
+  <div class="chat-container" *ngFor="let message of messages | async">
+    <a href="#">{{Stas}}</a>
+
+    <p>{{message}}</p>
+  </div>
+</div>
