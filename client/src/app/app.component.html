@@ -3,9 +3,10 @@
   <input type="text" id="message" placeholder="Chat here..." (keyup.enter)="chatSend($event.target.value)"
          [(ngModel)]="msgVal"/>
 
-  <div class="chat-container" *ngFor="let message of messages | async">
-    <a href="#">{{Stas}}</a>
+  <div class="chat-container" *ngFor="let data of messages | async">
+    <a href="#">Stanislav Verovkin</a>
+    <button (click)="removeMessage(data.id)">Remove</button>
 
-    <p>{{message}}</p>
+    <p>{{data.message}}</p>
   </div>
 </div>

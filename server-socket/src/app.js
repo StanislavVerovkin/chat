@@ -12,15 +12,21 @@ io.on('connection', socket => {
   // });
 
   socket.on("addMessage", data => {
-    messages.push(data.message);
+    messages.push({
+      id: data.id,
+      message: data.message,
+    });
     io.emit("messages", messages);
     socket.emit("message", data);
   });
 
-  // socket.on("editDoc", doc => {
-  //   documents[doc.id] = doc;
-  //   socket.to(doc.id).emit("document", doc);
-  // });
+  socket.on("removeMessage", data => {
+
+
+    io.emit("messages", messages);
+    socket.emit("message", data);
+
+  });
   io.emit("messages", messages);
 });
 

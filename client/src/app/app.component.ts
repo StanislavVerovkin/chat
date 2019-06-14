@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
-import {DocumentService} from './document.service';
+import {SocketService} from './socket.service';
 import {Observable} from 'rxjs/internal/Observable';
+import {MessageModel} from './models/message.model';
 
 @Component({
   selector: 'app-root',
@@ -10,19 +11,23 @@ import {Observable} from 'rxjs/internal/Observable';
 export class AppComponent implements OnInit {
 
   msgVal = '';
-  messages: Observable<string[]>;
+  messages: Observable<MessageModel[]>;
 
   constructor(
-    private documentService: DocumentService,
+    private socketService: SocketService,
   ) {
   }
 
   ngOnInit() {
-    this.messages = this.documentService.messages;
+    this.messages = this.socketService.messages;
   }
 
   chatSend(theirMessage: string) {
-    this.documentService.newMessage(theirMessage);
+    this.socketService.newMessage(theirMessage);
     this.msgVal = '';
+  }
+
+  removeMessage(id) {
+    this.socketService.deleteMessage(id);
   }
 }
