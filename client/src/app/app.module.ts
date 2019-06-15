@@ -1,31 +1,32 @@
 import {BrowserModule} from '@angular/platform-browser';
-import {AngularFireModule} from 'angularfire2';
 import {NgModule} from '@angular/core';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {HttpClientModule} from '@angular/common/http';
+import {AppRoutingModule} from './app-routing.module';
+import {SocketIoModule, SocketIoConfig} from 'ngx-socket-io';
 
 import {AppComponent} from './app.component';
-import {FormsModule} from '@angular/forms';
-import {HttpClientModule} from '@angular/common/http';
+import {LoginComponent} from './auth/login/login.component';
+import {RegisterComponent} from './auth/register/register.component';
+import {ChatComponent} from './chat/chat.component';
 
-import {AngularFireAuthModule} from '@angular/fire/auth';
-import {AngularFireDatabaseModule} from '@angular/fire/database';
-import {SocketIoModule, SocketIoConfig} from 'ngx-socket-io';
-import {environment} from '../environments/environment';
 
 const config: SocketIoConfig = {url: 'http://localhost:4444', options: {}};
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    LoginComponent,
+    RegisterComponent,
+    ChatComponent,
   ],
   imports: [
     BrowserModule,
-    AngularFireModule,
     FormsModule,
+    ReactiveFormsModule,
     HttpClientModule,
     SocketIoModule.forRoot(config),
-    AngularFireModule.initializeApp(environment),
-    AngularFireAuthModule,
-    AngularFireDatabaseModule,
+    AppRoutingModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

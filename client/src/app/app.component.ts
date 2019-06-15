@@ -5,29 +5,8 @@ import {MessageModel} from './models/message.model';
 
 @Component({
   selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  template: '<router-outlet></router-outlet>',
 })
-export class AppComponent implements OnInit {
+export class AppComponent {
 
-  msgVal = '';
-  messages: Observable<MessageModel[]>;
-
-  constructor(
-    private socketService: SocketService,
-  ) {
-  }
-
-  ngOnInit() {
-    this.messages = this.socketService.messages;
-  }
-
-  chatSend(theirMessage: string) {
-    this.socketService.newMessage(theirMessage);
-    this.msgVal = '';
-  }
-
-  removeMessage(message) {
-    this.socketService.deleteMessage(message);
-  }
 }

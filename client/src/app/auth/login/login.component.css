@@ -1,0 +1,35 @@
+input {
+  background: none;
+  border: none;
+  border-bottom: 1px solid #4C4C4C;
+  outline: none;
+  box-shadow: none;
+  color: white;
+  font-size: 1.6em;
+  font-weight: 300;
+  padding: 1.2em 0;
+}
+
+.container {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.inputs {
+  display: flex;
+  flex-direction: column;
+  width: 25em;
+}
+
+button {
+  border: none;
+  background-color: #816A98;
+  outline: none;
+  border-radius: 40px;
+  height: 50px;
+  margin-top: 15px;
+  cursor: pointer;
+  opacity: .8;
+}
