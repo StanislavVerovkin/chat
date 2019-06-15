@@ -34,11 +34,56 @@ input#message {
   color: #816A98;
   font-size: .8em;
   letter-spacing: 2px;
+  transition: color 1s linear;
+}
+
+.chat-container:hover a {
+  color: skyblue;
 }
 
 .chat-container p {
+  height: 60px;
+  display: flex;
+  align-items: center;
   background: #323035;
-  padding: 1.1em;
   color: white;
   margin: 5px 0 10px 0;
+  padding-left: 10px;
+  transition: all 0.3s ease-in-out;
+}
+
+.chat-container p:hover {
+  transform: scale(1.05, 1.05);
+}
+
+.chat-container p:after {
+  opacity: .1;
+}
+
+img {
+  width: 15px;
+}
+
+img:hover {
+  animation: spin 2s;
+}
+
+.head {
+  display: flex;
+  height: 20px;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.image {
+  cursor: pointer;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }

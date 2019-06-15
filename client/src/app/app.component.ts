@@ -27,7 +27,7 @@ export class AppComponent implements OnInit {
     this.msgVal = '';
   }
 
-  removeMessage(id) {
-    this.socketService.deleteMessage(id);
+  removeMessage(message) {
+    this.socketService.deleteMessage(message);
   }
 }

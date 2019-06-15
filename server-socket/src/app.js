@@ -1,33 +1,23 @@
 const app = require('express')();
-const http = require('http').Server(app);
-const io = require('socket.io')(http);
+const cors = require('cors');
+const keys = require('../config/keys');
+const mongoose = require('mongoose');
+const bodyParser = require('body-parser');
 
-const messages = [];
+const messageRoutes = require('../routes/messages');
 
-io.on('connection', socket => {
+app.use(cors());
+app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.json());
 
-  // socket.on("getDoc", docId => {
-  //   safeJoin(docId);
-  //   socket.emit("document", documents[docId]);
-  // });
+app.use('/api/messages', messageRoutes);
 
-  socket.on("addMessage", data => {
-    messages.push({
-      id: data.id,
-      message: data.message,
-    });
-    io.emit("messages", messages);
-    socket.emit("message", data);
-  });
+mongoose.set('useNewUrlParser', true);
+mongoose.set('useFindAndModify', false);
+mongoose.set('useCreateIndex', true);
 
-  socket.on("removeMessage", data => {
+mongoose.connect(keys.mongoURI)
+  .then(() => console.log('Connect to MongoDB done'))
+  .catch((err) => console.log(err));
 
-
-    io.emit("messages", messages);
-    socket.emit("message", data);
-
-  });
-  io.emit("messages", messages);
-});
-
-http.listen(4444);
+module.exports = app;

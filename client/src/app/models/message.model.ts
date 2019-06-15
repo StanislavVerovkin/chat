@@ -1,4 +1,4 @@
 export interface MessageModel {
-  id: number;
+  _id?: string;
   message: string;
 }

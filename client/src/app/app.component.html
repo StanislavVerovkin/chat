@@ -3,10 +3,15 @@
   <input type="text" id="message" placeholder="Chat here..." (keyup.enter)="chatSend($event.target.value)"
          [(ngModel)]="msgVal"/>
 
-  <div class="chat-container" *ngFor="let data of messages | async">
-    <a href="#">Stanislav Verovkin</a>
-    <button (click)="removeMessage(data.id)">Remove</button>
-
-    <p>{{data.message}}</p>
+  <div class="chat-container" *ngFor="let message of messages | async">
+      <div class="head">
+        <div class="title">
+          <a href="#">Stanislav Verovkin</a>
+        </div>
+        <div class="image">
+          <img (click)="removeMessage(message)" src="https://image.flaticon.com/icons/svg/579/579006.svg">
+        </div>
+      </div>
+      <p>{{message}}</p>
   </div>
 </div>
