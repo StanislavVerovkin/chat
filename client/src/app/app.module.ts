@@ -4,11 +4,13 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {HttpClientModule} from '@angular/common/http';
 import {AppRoutingModule} from './app-routing.module';
 import {SocketIoModule, SocketIoConfig} from 'ngx-socket-io';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 import {AppComponent} from './app.component';
 import {LoginComponent} from './auth/login/login.component';
 import {RegisterComponent} from './auth/register/register.component';
 import {ChatComponent} from './chat/chat.component';
+import {MaterialModule} from './shared/material/material.module';
 
 
 const config: SocketIoConfig = {url: 'http://localhost:4444', options: {}};
@@ -22,6 +24,8 @@ const config: SocketIoConfig = {url: 'http://localhost:4444', options: {}};
   ],
   imports: [
     BrowserModule,
+    MaterialModule,
+    BrowserAnimationsModule,
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,

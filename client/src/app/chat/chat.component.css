@@ -1,3 +1,13 @@
+.main {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+}
+
+.row {
+  width: 65%;
+}
+
 input#message {
   background: none;
   border: none;
@@ -9,6 +19,7 @@ input#message {
   font-weight: 300;
   margin-bottom: 3em;
   padding: 1.2em 0;
+  width: 100%;
 }
 
 .chat-container {

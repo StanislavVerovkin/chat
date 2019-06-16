@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
-import {MessageModel} from '../models/message.model';
-import {Observable} from 'rxjs/internal/Observable';
 import {SocketService} from '../socket.service';
+import {MessageModel} from '../models/message.model';
+import {Observable} from 'rxjs';
 
 @Component({
   selector: 'app-chat',
@@ -19,7 +19,7 @@ export class ChatComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.messages = this.socketService.messages;
+    this.messages = this.socketService.getMessages();
   }
 
   chatSend(theirMessage: string) {
@@ -27,7 +27,7 @@ export class ChatComponent implements OnInit {
     this.msgVal = '';
   }
 
-  removeMessage(message) {
-    this.socketService.deleteMessage(message);
+  removeMessage(id) {
+    this.socketService.deleteMessage(id);
   }
 }

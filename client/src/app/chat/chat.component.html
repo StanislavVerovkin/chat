@@ -1,26 +1,28 @@
-<div class="row columns">
+<div class="main">
+  <div class="row columns">
 
-  <input
-    type="text"
-    id="message"
-    placeholder="Chat here..."
-    (keyup.enter)="chatSend($event.target.value)"
-    [(ngModel)]="msgVal"
-  />
+    <input
+      type="text"
+      id="message"
+      placeholder="Chat here..."
+      (keyup.enter)="chatSend($event.target.value)"
+      [(ngModel)]="msgVal"
+    />
 
-  <div class="chat-container" *ngFor="let message of messages | async">
-    <div class="head">
-      <div class="title">
-        <a href="#">Stanislav Verovkin</a>
+    <div class="chat-container" *ngFor="let data of messages | async">
+      <div class="head">
+        <div class="title">
+          <a href="#">Stanislav Verovkin</a>
+        </div>
+        <div class="image">
+          <img
+            (click)="removeMessage(data._id)"
+            src="https://image.flaticon.com/icons/svg/579/579006.svg"
+          >
+        </div>
       </div>
-      <div class="image">
-        <img
-          (click)="removeMessage(message)"
-          src="https://image.flaticon.com/icons/svg/579/579006.svg"
-        >
-      </div>
+      <p>{{data.message}}</p>
     </div>
-    <p>{{message}}</p>
-  </div>
 
+  </div>
 </div>

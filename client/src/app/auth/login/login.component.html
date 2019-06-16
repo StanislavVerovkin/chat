@@ -1,10 +1,27 @@
-<form [formGroup]="form" (ngSubmit)="onSubmit(form.value)">
-  <div class="container">
-    <div class="inputs">
-      <h3 align="center">Sign in</h3>
-      <input formControlName="login" placeholder="Login...">
-      <input formControlName="password" placeholder="Password...">
-      <button type="submit">Sign in</button>
+<form [formGroup]="form" (ngSubmit)="onSubmit(form.value)" class="form">
+    <div class="inside-form">
+      <mat-card-title>Login</mat-card-title>
+      <mat-form-field>
+        <input
+          formControlName="email"
+          matInput
+          placeholder="Email"
+        >
+        <mat-error *ngIf="form.get('email').invalid && form.get('email').touched">{{getErrorMessageEmail()}}</mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <input
+          formControlName="password"
+          matInput
+          placeholder="Password"
+        >
+        <mat-icon class="icon" matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+        <mat-error *ngIf="form.get('password').invalid && form.get('password').touched">{{getErrorMessagePassword()}}
+        </mat-error>
+      </mat-form-field>
+      <div class="buttons">
+        <button [disabled]="form.invalid" type="submit" mat-raised-button="primary">Login</button>
+        <button routerLink="/chat" type="button" class="register-btn" mat-raised-button="primary">Register</button>
+      </div>
     </div>
-  </div>
 </form>

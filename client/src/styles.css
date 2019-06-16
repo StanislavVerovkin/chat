@@ -1,11 +1,9 @@
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+
 body {
-  background-color: #141414;
+  background-color: #131111;
 }
 
 * {
   font-family: 'Raleway', sans-serif;
-}
-
-button {
-  color: wheat;
 }

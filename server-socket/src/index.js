@@ -3,24 +3,38 @@ const http = require('http').Server(app);
 const io = require('socket.io')(http);
 const port = process.env.PORT || 4444;
 
-const messages = [];
+const Message = require('../models/Message');
 
 io.on('connection', socket => {
+
   socket.on("addMessage", data => {
+    Message({
+      message: data.message
+    }).save()
+      .then(() => {
+        Message.find({})
+          .then(data => {
+            io.emit("messages", data);
+          });
+      });
+  });
 
-    messages.push(data.message);
-    io.emit("messages", messages);
-
+  socket.on('getMessages', () => {
+    Message.find({})
+      .then((data) => {
+        io.emit("messages", data);
+      })
   });
 
   socket.on("removeMessage", data => {
-    let index = messages.indexOf(data.message);
-    if (index >= 0) {
-      messages.splice(index, 1);
-    }
-    io.emit("messages", messages);
+    Message.findByIdAndRemove(data.id, () => {
+      Message.find({})
+        .then((data) => {
+          io.emit("messages", data);
+        })
+    })
   });
-  io.emit("messages", messages);
+
 });
 
 http.listen(port, () => console.log(`Server on port ${port}`));
