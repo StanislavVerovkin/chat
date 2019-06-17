@@ -1,28 +1,49 @@
-<div class="main">
-  <div class="row columns">
+<mat-toolbar>
+  <mat-toolbar-row>
+    <mat-icon (click)="drawer.toggle()">list</mat-icon>
+    <span class="example-spacer"></span>
+    <mat-icon (click)="logoutUser()" class="example-icon" aria-hidden="false" aria-label="Example delete icon">logout</mat-icon>
+  </mat-toolbar-row>
+</mat-toolbar>
 
-    <input
-      type="text"
-      id="message"
-      placeholder="Chat here..."
-      (keyup.enter)="chatSend($event.target.value)"
-      [(ngModel)]="msgVal"
-    />
+<mat-drawer-container class="container" autosize>
 
-    <div class="chat-container" *ngFor="let data of messages | async">
-      <div class="head">
-        <div class="title">
-          <a href="#">Stanislav Verovkin</a>
-        </div>
-        <div class="image">
-          <img
-            (click)="removeMessage(data._id)"
-            src="https://image.flaticon.com/icons/svg/579/579006.svg"
-          >
+  <mat-drawer #drawer class="example-sidenav" mode="side">
+    <mat-list>
+      <mat-list-item *ngFor="let user of users">
+        <h3 matLine>{{user.name}}</h3>
+      </mat-list-item>
+    </mat-list>
+  </mat-drawer>
+
+  <div class="example-sidenav-content">
+    <div class="main">
+      <div class="row columns">
+
+        <input
+          type="text"
+          id="message"
+          placeholder="Chat here..."
+          (keyup.enter)="chatSend($event.target.value)"
+          [(ngModel)]="msgVal"
+        />
+
+        <div class="chat-container" *ngFor="let data of messages | async">
+          <div class="head">
+            <div class="title">
+              <a href="#">Stanislav</a>
+            </div>
+            <div class="image">
+              <img
+                (click)="removeMessage(data._id)"
+                src="https://image.flaticon.com/icons/svg/579/579006.svg"
+              >
+            </div>
+          </div>
+          <p>{{data.message}}</p>
         </div>
       </div>
-      <p>{{data.message}}</p>
     </div>
-
   </div>
-</div>
+
+</mat-drawer-container>

@@ -1,5 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {AuthService} from '../../shared/services/auth.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -11,7 +13,10 @@ export class LoginComponent implements OnInit {
   form: FormGroup;
   hide = true;
 
-  constructor() {
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+  ) {
   }
 
   ngOnInit() {
@@ -36,7 +41,10 @@ export class LoginComponent implements OnInit {
     return this.form.controls.password.hasError('required') ? 'You must enter a password' : '';
   }
 
-  onSubmit(value) {
-    console.log(value);
+  onSubmit(user) {
+    this.authService.login(user)
+      .subscribe((data) => {
+        this.router.navigate(['/chat']);
+      });
   }
 }

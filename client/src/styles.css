@@ -1,9 +1,12 @@
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
 
-body {
-  background-color: #131111;
+html, body {
+  min-height: 100% !important;
+  height: 100%;
 }
 
 * {
   font-family: 'Raleway', sans-serif;
+  padding: 0;
+  margin: 0;
 }

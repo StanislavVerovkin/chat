@@ -1,0 +1,53 @@
+.form {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  height: 90vh;
+}
+
+.inside-form {
+  display: flex;
+  flex-direction: column;
+  color: gainsboro;
+}
+
+mat-form-field {
+  width: 35em;
+}
+
+.register-btn {
+  margin-left: 10px;
+}
+
+button {
+  border: none;
+  background-color: #816A98;
+  outline: none;
+  border-radius: 40px;
+  margin-top: 15px;
+  opacity: .8;
+  color: gainsboro;
+}
+
+mat-label {
+  color: #816A98;
+}
+
+mat-icon {
+  cursor: pointer;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus,
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus {
+  border: none;
+  -webkit-box-shadow: none;
+  transition: background-color 5000s ease-in-out 0s;
+}
