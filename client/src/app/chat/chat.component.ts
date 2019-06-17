@@ -26,26 +26,32 @@ export class ChatComponent implements OnInit {
     this.socketService.addOrGetUser('getLoggedUsers')
       .subscribe((data: any) => {
         this.users = data;
-        console.log(this.users);
       });
   }
 
   chatSend(theirMessage: string) {
-    this.socketService.newMessage(theirMessage);
-    this.msgVal = '';
+    this.getUniqueUser();
+
+    this.uniqUser.forEach((element) => {
+      this.socketService.newMessage(theirMessage, element.name);
+      this.msgVal = '';
+    });
   }
 
   logoutUser() {
 
+    this.getUniqueUser();
+
+    this.uniqUser.forEach((element) => {
+      this.socketService.removeLoggedUser(element._id);
+    });
+  }
+
+  getUniqueUser() {
     const token = JSON.parse(localStorage.getItem('token'));
 
     this.uniqUser = this.users.filter((element) => {
       return element.token === token;
-    });
-
-    this.uniqUser.forEach((element) => {
-      this.socketService.removeLoggedUser(element._id);
-      localStorage.removeItem('token');
     });
   }
 

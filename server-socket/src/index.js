@@ -10,7 +10,8 @@ io.on('connection', socket => {
 
   socket.on("addMessage", data => {
     Message({
-      message: data.message
+      message: data.message,
+      name: data.name
     }).save()
       .then(() => {
         Message.find({})

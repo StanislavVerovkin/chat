@@ -31,7 +31,7 @@
         <div class="chat-container" *ngFor="let data of messages | async">
           <div class="head">
             <div class="title">
-              <a href="#">Stanislav</a>
+              <a href="#">{{data.name}}</a>
             </div>
             <div class="image">
               <img

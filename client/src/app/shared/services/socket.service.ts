@@ -16,8 +16,8 @@ export class SocketService {
   ) {
   }
 
-  newMessage(message) {
-    this.socket.emit('addMessage', {message});
+  newMessage(message, name) {
+    this.socket.emit('addMessage', {message, name});
   }
 
   getMessages(): Observable<MessageModel[]> {
