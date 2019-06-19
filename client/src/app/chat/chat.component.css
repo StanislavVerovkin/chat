@@ -129,7 +129,7 @@ h3 {
   cursor: pointer;
 }
 
-mat-list-item span {
+.type {
   font-style: italic;
   font-size: 14px;
   padding-left: 10px;

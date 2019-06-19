@@ -1,16 +1,26 @@
-import {AfterContentInit, AfterViewChecked, AfterViewInit, Component, DoCheck, OnInit} from '@angular/core';
+import {
+  AfterContentChecked,
+  AfterContentInit,
+  AfterViewChecked,
+  AfterViewInit,
+  Component,
+  DoCheck,
+  OnChanges,
+  OnDestroy,
+  OnInit
+} from '@angular/core';
 import {SocketService} from '../shared/services/socket.service';
 import {MessageModel} from '../models/message.model';
-import {Observable} from 'rxjs';
+import {Observable, Subscription} from 'rxjs';
 import {UserModel} from '../models/user.model';
-import {typeIsOrHasBaseType} from "tslint/lib/language/typeUtils";
+import {typeIsOrHasBaseType} from 'tslint/lib/language/typeUtils';
 
 @Component({
   selector: 'app-chat',
   templateUrl: './chat.component.html',
   styleUrls: ['./chat.component.css']
 })
-export class ChatComponent implements OnInit {
+export class ChatComponent implements OnInit, OnDestroy, AfterViewInit {
 
   msgVal = '';
   messages: Observable<MessageModel[]>;
@@ -18,6 +28,8 @@ export class ChatComponent implements OnInit {
   uniqUser = [];
   localStorage: UserModel;
   typing;
+
+  sub: Subscription;
 
   constructor(
     private socketService: SocketService,
@@ -32,6 +44,9 @@ export class ChatComponent implements OnInit {
         this.users = data;
         this.localStorage = JSON.parse(localStorage.getItem('token'));
       });
+  }
+
+  ngAfterViewInit() {
   }
 
   chatSend(theirMessage: string) {
@@ -73,22 +88,18 @@ export class ChatComponent implements OnInit {
   }
 
   typingMessage(status) {
-
-    this.typing = status;
-
     const userName = JSON.parse(localStorage.getItem('token'));
 
-    this.socketService.typing(status, userName.name)
+    this.sub = this.socketService.typing(status, userName.name)
       .subscribe((data) => {
         this.typing = data;
-
-        // if (userName === this.typing.userName) {
-        //   this.typing = true;
-        // }
-
-        setTimeout(() => {
-          this.typing = false;
-        }, 5000);
       });
+    setTimeout(() => {
+      this.typing = false;
+    }, 5000);
+  }
+
+  ngOnDestroy() {
+    this.sub.unsubscribe();
   }
 }
