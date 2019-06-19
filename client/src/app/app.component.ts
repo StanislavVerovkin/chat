@@ -1,8 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {SocketService} from './shared/services/socket.service';
-import {Observable} from 'rxjs/internal/Observable';
-import {MessageModel} from './models/message.model';
-import {AuthService} from './shared/services/auth.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -10,10 +7,12 @@ import {AuthService} from './shared/services/auth.service';
 })
 export class AppComponent implements OnInit {
 
-  constructor() {
+  constructor(private router: Router) {
   }
 
   ngOnInit() {
-
+    if (JSON.parse(localStorage.getItem('token'))) {
+      this.router.navigate(['/chat']);
+    }
   }
 }

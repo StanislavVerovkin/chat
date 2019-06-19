@@ -24,8 +24,7 @@ export class AuthService {
     return this.http.post<UserModel>('http://localhost:4444/api/auth/login', user)
       .pipe(
         tap((data: any) => {
-          console.log(data.token);
-          localStorage.setItem('token', JSON.stringify(data.token));
+          localStorage.setItem('token', JSON.stringify(data));
           this.socketService.addOrGetUser('addLoggedUser', data);
         })
       );

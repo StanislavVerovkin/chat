@@ -43,7 +43,7 @@ export class LoginComponent implements OnInit {
 
   onSubmit(user) {
     this.authService.login(user)
-      .subscribe((data) => {
+      .subscribe(() => {
         this.router.navigate(['/chat']);
       });
   }

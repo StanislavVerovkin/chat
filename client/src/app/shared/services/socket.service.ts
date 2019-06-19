@@ -35,7 +35,12 @@ export class SocketService {
   }
 
   removeLoggedUser(id) {
-    this.socket.emit('changeStatusLogin', id);
+    this.socket.emit('logout', id);
     this.router.navigate(['/login']);
+  }
+
+  typing(status, userName) {
+    this.socket.emit('typing', {status, userName});
+    return this.socket.fromEvent('typingMessage');
   }
 }

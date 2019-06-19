@@ -2,7 +2,8 @@
   <mat-toolbar-row>
     <mat-icon (click)="drawer.toggle()">list</mat-icon>
     <span class="example-spacer"></span>
-    <mat-icon (click)="logoutUser()" class="example-icon" aria-hidden="false" aria-label="Example delete icon">logout</mat-icon>
+    <mat-icon (click)="logoutUser()" class="example-icon" aria-hidden="false" aria-label="Example delete icon">logout
+    </mat-icon>
   </mat-toolbar-row>
 </mat-toolbar>
 
@@ -11,7 +12,17 @@
   <mat-drawer #drawer class="example-sidenav" mode="side">
     <mat-list>
       <mat-list-item *ngFor="let user of users">
-        <h3 matLine>{{user.name}}</h3>
+        <h3
+          [ngStyle]="{'color': getColorUser(user.token)}"
+          matLine
+        >
+          {{user.name}}
+        </h3>
+        <span
+          *ngIf="typing"
+        >
+          typing...
+        </span>
       </mat-list-item>
     </mat-list>
   </mat-drawer>
@@ -25,6 +36,7 @@
           id="message"
           placeholder="Chat here..."
           (keyup.enter)="chatSend($event.target.value)"
+          (keypress)="typingMessage(true)"
           [(ngModel)]="msgVal"
         />
 

@@ -54,7 +54,7 @@ io.on('connection', socket => {
       })
   });
 
-  socket.on("changeStatusLogin", (id) => {
+  socket.on("logout", (id) => {
     LoggedUser.remove({_id: id})
       .then(() => {
         LoggedUser.find({})
@@ -63,6 +63,10 @@ io.on('connection', socket => {
           });
       })
   });
+
+  socket.on('typing', data => {
+    io.emit('typingMessage', data);
+  })
 });
 
 http.listen(port, () => console.log(`Server on port ${port}`));

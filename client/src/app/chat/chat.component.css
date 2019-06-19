@@ -126,8 +126,14 @@ mat-drawer {
 }
 
 h3 {
-  color: gainsboro;
   cursor: pointer;
+}
+
+mat-list-item span {
+  font-style: italic;
+  font-size: 14px;
+  padding-left: 10px;
+  color: wheat;
 }
 
 @keyframes spin {
