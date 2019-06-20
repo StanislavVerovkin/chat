@@ -20,7 +20,7 @@
         </h3>
         <span
           class="type"
-          *ngIf="typing.userName === user.name && typing.status !== false"
+          *ngIf="typing.userName === user.name && typing.status"
         >
         typing...
         </span>
@@ -36,8 +36,8 @@
           type="text"
           id="message"
           placeholder="Chat here..."
+          #inputMessage
           (keyup.enter)="chatSend($event.target.value)"
-          (keypress)="typingMessage(true)"
           [(ngModel)]="msgVal"
         />
 
