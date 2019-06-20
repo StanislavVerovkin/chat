@@ -4,15 +4,15 @@ import {MessageModel} from '../models/message.model';
 import {Observable, Subscription} from 'rxjs';
 import {UserModel} from '../models/user.model';
 import {debounceTime, take, takeUntil, tap} from 'rxjs/operators';
-import {fromEvent} from "rxjs/internal/observable/fromEvent";
-import {Subject} from "rxjs/internal/Subject";
+import {fromEvent} from 'rxjs/internal/observable/fromEvent';
+import {Subject} from 'rxjs/internal/Subject';
 
 @Component({
   selector: 'app-chat',
   templateUrl: './chat.component.html',
   styleUrls: ['./chat.component.css']
 })
-export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
+export class ChatComponent implements OnInit, OnDestroy, AfterViewInit {
 
   msgVal = '';
   messages: Observable<MessageModel[]>;
@@ -21,7 +21,7 @@ export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
   localStorage: UserModel;
   typing;
 
-  sub: Subscription;
+  startTyping = false;
 
   destroy: Subject<any> = new Subject<any>();
 
@@ -33,7 +33,6 @@ export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnInit() {
-    // this.typingMessage(false);
     this.messages = this.socketService.getMessages();
     this.socketService.addOrGetUser('getLoggedUsers')
       .subscribe((data: any[]) => {
@@ -43,8 +42,9 @@ export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit() {
-    this.subscribeTotyping();
+    this.subscribeToTyping();
   }
+
 
   chatSend(theirMessage: string) {
 
@@ -83,6 +83,7 @@ export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
       return 'gainsboro';
     }
   }
+
   //
   // typingMessage(status) {
   //
@@ -111,27 +112,31 @@ export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
     this.destroy.unsubscribe();
   }
 
-  subscribeTotyping() {
-    let startTyping = false;
-
+  subscribeToTyping() {
     fromEvent(this.input.nativeElement, 'keydown').pipe(
       takeUntil(this.destroy),
       tap(() => {
-        if (!startTyping) {
-          console.log('startTyping');
-          startTyping = true;
+        if (!this.startTyping) {
+          this.typingFunc(true);
         }
       }),
-      debounceTime(5000),
+      debounceTime(3000),
       tap(() => {
-        if (startTyping) {
-          console.log('endtyping');
-          startTyping = false;
+        if (this.startTyping) {
+          this.typingFunc(false);
         }
       }),
     ).subscribe();
-
   }
 
+  typingFunc(status) {
 
+    const userName = JSON.parse(localStorage.getItem('token'));
+
+    this.socketService.typing(status, userName.name)
+      .subscribe((data: any) => {
+        this.startTyping = data;
+        console.log(this.startTyping.status);
+      });
+  }
 }
