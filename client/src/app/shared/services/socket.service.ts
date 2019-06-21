@@ -39,8 +39,12 @@ export class SocketService {
     this.router.navigate(['/login']);
   }
 
-  typing(status, userName) {
-    this.socket.emit('typing', {status, userName});
+  sendStatusIsTyping(status, userName) {
+    return this.socket.emit('typing', {status, userName});
+  }
+
+  subscribeToChangeStatusMember(): Observable<{status: boolean, userName: string}> {
     return this.socket.fromEvent('typingMessage');
   }
+
 }

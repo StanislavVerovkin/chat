@@ -6,22 +6,23 @@ import {UserModel} from '../models/user.model';
 import {debounceTime, take, takeUntil, tap} from 'rxjs/operators';
 import {fromEvent} from 'rxjs/internal/observable/fromEvent';
 import {Subject} from 'rxjs/internal/Subject';
+import {el} from "@angular/platform-browser/testing/src/browser_util";
 
 @Component({
   selector: 'app-chat',
   templateUrl: './chat.component.html',
   styleUrls: ['./chat.component.css']
 })
-export class ChatComponent implements OnInit, OnDestroy, AfterViewInit {
+export class ChatComponent implements OnInit, OnDestroy {
 
   msgVal = '';
   messages: Observable<MessageModel[]>;
   users: UserModel[];
   uniqUser = [];
   localStorage: UserModel;
-  typing;
 
   startTyping = false;
+  partnerIsTyping: { status: boolean, userName: string };
 
   destroy: Subject<any> = new Subject<any>();
 
@@ -33,18 +34,21 @@ export class ChatComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngOnInit() {
+    this.partnerIsTyping = {status: false, userName: ''};
+
+    this.subscribeToTyping();
     this.messages = this.socketService.getMessages();
     this.socketService.addOrGetUser('getLoggedUsers')
       .subscribe((data: any[]) => {
         this.users = data;
         this.localStorage = JSON.parse(localStorage.getItem('token'));
       });
-  }
 
-  ngAfterViewInit() {
-    this.subscribeToTyping();
+    this.socketService.subscribeToChangeStatusMember()
+      .subscribe(res => {
+        this.partnerIsTyping = res;
+      });
   }
-
 
   chatSend(theirMessage: string) {
 
@@ -84,29 +88,6 @@ export class ChatComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
-  //
-  // typingMessage(status) {
-  //
-  //   const userName = JSON.parse(localStorage.getItem('token'));
-  //
-  //   this.sub = this.socketService.typing(status, userName.name)
-  //     .pipe(
-  //       take(1),
-  //       takeUntil(this.destroy),
-  //     )
-  //     .subscribe((data) => {
-  //       this.typing = data;
-  //       console.log(this.typing.status);
-  //
-  //       if (this.typing.status) {
-  //         setTimeout(() => {
-  //           this.typing.status = false;
-  //           console.log(this.typing.status);
-  //         }, 5000);
-  //       }
-  //     });
-  // }
-
   ngOnDestroy() {
     this.destroy.next();
     this.destroy.unsubscribe();
@@ -117,26 +98,17 @@ export class ChatComponent implements OnInit, OnDestroy, AfterViewInit {
       takeUntil(this.destroy),
       tap(() => {
         if (!this.startTyping) {
-          this.typingFunc(true);
+          this.socketService.sendStatusIsTyping(true, this.localStorage.name);
+          this.startTyping = true;
         }
       }),
       debounceTime(3000),
       tap(() => {
         if (this.startTyping) {
-          this.typingFunc(false);
+          this.socketService.sendStatusIsTyping(false, this.localStorage.name);
+          this.startTyping = false;
         }
       }),
     ).subscribe();
-  }
-
-  typingFunc(status) {
-
-    const userName = JSON.parse(localStorage.getItem('token'));
-
-    this.socketService.typing(status, userName.name)
-      .subscribe((data: any) => {
-        this.startTyping = data;
-        console.log(this.startTyping.status);
-      });
   }
 }

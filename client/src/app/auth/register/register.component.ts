@@ -51,7 +51,11 @@ export class RegisterComponent implements OnInit {
   onSubmit(user) {
     this.authService.register(user)
       .subscribe(() => {
-        this.router.navigate(['/login']);
+        this.router.navigate(['/login'], {
+          queryParams: {
+            registered: true
+          }
+        });
       });
   }
 }
