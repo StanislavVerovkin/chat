@@ -26,12 +26,12 @@ mongoose.connect(keys.mongoURI)
   .catch((err) => console.log(err));
 
 if (process.env.NODE_ENV === 'production') {
-  app.use(express.static('mychatapp/dist/mychatapp'));
+  app.use(express.static('client/dist/mychatapp'));
 
   app.get('*', (req, res) => {
     res.sendFile(
       path.resolve(
-        __dirname, 'mychatapp', 'client', 'dist', 'mychatapp', 'index.html'
+        __dirname, 'client', 'dist', 'mychatapp', 'index.html'
       )
     )
   })
