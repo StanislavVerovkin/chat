@@ -17,11 +17,11 @@ export class AuthService {
   }
 
   register(user: UserModel): Observable<UserModel> {
-    return this.http.post<UserModel>('http://localhost:4444/api/auth/register', user);
+    return this.http.post<UserModel>('/api/auth/register', user);
   }
 
   login(user: UserModel): Observable<UserModel> {
-    return this.http.post<UserModel>('http://localhost:4444/api/auth/login', user)
+    return this.http.post<UserModel>('/api/auth/login', user)
       .pipe(
         tap((data: any) => {
           localStorage.setItem('token', JSON.stringify(data));
