@@ -2,13 +2,22 @@
   <mat-toolbar-row>
     <mat-icon (click)="drawer.toggle()">list</mat-icon>
     <span class="example-spacer"></span>
+
+    <div class="main-type">
+      <div
+        class="type"
+        *ngIf="partnerIsTyping.status"
+      >
+        {{partnerIsTyping.userName}} is typing...
+      </div>
+    </div>
+    <span class="example-spacer"></span>
     <mat-icon (click)="logoutUser()" class="example-icon" aria-hidden="false" aria-label="Example delete icon">logout
     </mat-icon>
   </mat-toolbar-row>
 </mat-toolbar>
 
 <mat-drawer-container class="container" autosize>
-
   <mat-drawer #drawer class="example-sidenav" mode="side">
     <mat-list>
       <mat-list-item *ngFor="let user of users">
@@ -26,14 +35,8 @@
     <div class="main">
       <div class="row columns">
 
-            <span
-              class="type"
-              *ngIf="partnerIsTyping.status"
-            >
-             {{partnerIsTyping.userName}} is typing...
-            </span>
-
         <input
+          required
           type="text"
           id="message"
           placeholder="Chat here..."
@@ -42,7 +45,7 @@
           [(ngModel)]="msgVal"
         />
 
-        <div class="chat-container" *ngFor="let data of messages | async">
+        <div class="chat-container" *ngFor="let data of messages">
           <div class="head">
             <div class="title">
               <a href="#">{{data.name}}</a>
@@ -56,8 +59,10 @@
           </div>
           <p>{{data.message}}</p>
         </div>
+
+        <app-loader *ngIf="isLoaded"></app-loader>
+
       </div>
     </div>
   </div>
-
 </mat-drawer-container>

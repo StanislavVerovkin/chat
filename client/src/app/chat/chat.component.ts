@@ -1,12 +1,10 @@
 import {AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {SocketService} from '../shared/services/socket.service';
 import {MessageModel} from '../models/message.model';
-import {Observable, Subscription} from 'rxjs';
 import {UserModel} from '../models/user.model';
-import {debounceTime, take, takeUntil, tap} from 'rxjs/operators';
+import {debounceTime, takeUntil, tap} from 'rxjs/operators';
 import {fromEvent} from 'rxjs/internal/observable/fromEvent';
 import {Subject} from 'rxjs/internal/Subject';
-import {el} from "@angular/platform-browser/testing/src/browser_util";
 
 @Component({
   selector: 'app-chat',
@@ -16,13 +14,16 @@ import {el} from "@angular/platform-browser/testing/src/browser_util";
 export class ChatComponent implements OnInit, OnDestroy {
 
   msgVal = '';
-  messages: Observable<MessageModel[]>;
+  messages: MessageModel[];
+
   users: UserModel[];
-  uniqUser = [];
+  uniqueUser: UserModel[];
   localStorage: UserModel;
 
   startTyping = false;
   partnerIsTyping: { status: boolean, userName: string };
+
+  isLoaded = false;
 
   destroy: Subject<any> = new Subject<any>();
 
@@ -34,10 +35,18 @@ export class ChatComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.partnerIsTyping = {status: false, userName: ''};
 
+    this.partnerIsTyping = {status: false, userName: null};
     this.subscribeToTyping();
-    this.messages = this.socketService.getMessages();
+
+    this.isLoaded = true;
+
+    this.socketService.getMessages()
+      .subscribe((data: MessageModel[]) => {
+        this.messages = data;
+        this.isLoaded = false;
+      });
+
     this.socketService.addOrGetUser('getLoggedUsers')
       .subscribe((data: any[]) => {
         this.users = data;
@@ -54,8 +63,9 @@ export class ChatComponent implements OnInit, OnDestroy {
 
     this.getUniqueUser();
 
-    this.uniqUser.forEach((element) => {
+    this.uniqueUser.forEach((element) => {
       this.socketService.newMessage(theirMessage, element.name);
+      this.isLoaded = true;
       this.msgVal = '';
     });
   }
@@ -64,18 +74,19 @@ export class ChatComponent implements OnInit, OnDestroy {
 
     this.getUniqueUser();
 
-    this.uniqUser.forEach((element) => {
+    this.uniqueUser.forEach((element) => {
       this.socketService.removeLoggedUser(element._id);
       localStorage.removeItem('token');
     });
   }
 
   removeMessage(id) {
+    this.isLoaded = true;
     this.socketService.deleteMessage(id);
   }
 
   getUniqueUser() {
-    this.uniqUser = this.users.filter((element) => {
+    this.uniqueUser = this.users.filter((element) => {
       return element.token === this.localStorage.token;
     });
   }

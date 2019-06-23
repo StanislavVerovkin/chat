@@ -3,6 +3,7 @@ import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {AuthService} from '../../shared/services/auth.service';
 import {ActivatedRoute, Params, Router} from '@angular/router';
 import {MatSnackBar} from '@angular/material';
+import {SnackBarService} from '../../shared/services/snack-bar.service';
 
 @Component({
   selector: 'app-login',
@@ -18,7 +19,7 @@ export class LoginComponent implements OnInit {
     private authService: AuthService,
     private router: Router,
     private route: ActivatedRoute,
-    private snackBar: MatSnackBar,
+    private snackBar: SnackBarService
   ) {
   }
 
@@ -36,9 +37,9 @@ export class LoginComponent implements OnInit {
 
     this.route.queryParams.subscribe((params: Params) => {
       if (params['accessDenied']) {
-        this.snackBar.open('Please login to chat', 'Close', {duration: 5000});
+        this.snackBar.getSnackBarError('You should login to the chat');
       } else if (params['registered']) {
-        this.snackBar.open('You can connect to chat with your data', 'Close', {duration: 5000});
+        this.snackBar.getSnackBarError('You can connect to chat with your data');
       }
     });
   }

@@ -38,13 +38,11 @@ io.on('connection', socket => {
   });
 
   socket.on("addLoggedUser", data => {
-
     LoggedUser({
       email: data.email,
       name: data.name,
       token: data.token
-    })
-      .save();
+    }).save();
   });
 
   socket.on("getLoggedUsers", () => {

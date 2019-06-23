@@ -43,8 +43,7 @@ export class SocketService {
     return this.socket.emit('typing', {status, userName});
   }
 
-  subscribeToChangeStatusMember(): Observable<{status: boolean, userName: string}> {
+  subscribeToChangeStatusMember(): Observable<{ status: boolean, userName: string }> {
     return this.socket.fromEvent('typingMessage');
   }
-
 }
