@@ -1,8 +1,11 @@
-const app = require('express')();
+const express = require('express');
 const cors = require('cors');
 const keys = require('../config/keys');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const path = require('path');
+
+const app = express();
 
 app.use(cors());
 app.use(bodyParser.urlencoded({extended: true}));
@@ -21,5 +24,17 @@ mongoose.set('useCreateIndex', true);
 mongoose.connect(keys.mongoURI)
   .then(() => console.log('Connect to MongoDB done'))
   .catch((err) => console.log(err));
+
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static('mychatapp/dist/mychatapp'));
+
+  app.get('*', (req, res) => {
+    res.sendFile(
+      path.resolve(
+        __dirname, 'mychatapp', 'dist', 'mychatapp', 'index.html'
+      )
+    )
+  })
+}
 
 module.exports = app;
