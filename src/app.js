@@ -31,7 +31,7 @@ if (process.env.NODE_ENV === 'production') {
   app.get('*', (req, res) => {
     res.sendFile(
       path.resolve(
-        __dirname, 'mychatapp', 'dist', 'mychatapp', 'index.html'
+        __dirname, 'mychatapp', 'client', 'dist', 'mychatapp', 'index.html'
       )
     )
   })
