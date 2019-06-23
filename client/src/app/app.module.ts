@@ -13,7 +13,7 @@ import {ChatComponent} from './chat/chat.component';
 import {MaterialModule} from './shared/material/material.module';
 import {LoaderComponent} from './ui/loader/loader.component';
 
-const config: SocketIoConfig = {url: 'http://localhost:4444', options: {}};
+const config: SocketIoConfig = {url: '/socket', options: {}};
 
 @NgModule({
   declarations: [
