@@ -26,6 +26,7 @@ mongoose.connect(keys.mongoURI)
   .catch((err) => console.log(err));
 
 if (process.env.NODE_ENV === 'production') {
+
   app.use(express.static('client/dist/mychatapp'));
 
   app.get('*', (req, res) => {
