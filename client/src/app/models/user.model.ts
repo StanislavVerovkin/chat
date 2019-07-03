@@ -4,5 +4,4 @@ export interface UserModel {
   name?: string;
   _id?: string;
   token?: string;
-  timeOfLogin?: string;
 }

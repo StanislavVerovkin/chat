@@ -53,7 +53,7 @@ io.on('connection', socket => {
   });
 
   socket.on("logout", (id) => {
-    LoggedUser.remove({_id: id})
+    LoggedUser.deleteOne({_id: id})
       .then(() => {
         LoggedUser.find({})
           .then((data) => {

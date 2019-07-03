@@ -12,11 +12,10 @@ module.exports.login = async (req, res) => {
 
     if (bcrypt.compareSync(req.body.password, candidate.password)) {
 
-
       const token = jwt.sign({
         email: candidate.email,
         userId: candidate._id,
-      }, keys.jwt, {expiresIn: 160 * 160});
+      }, keys.jwt, {expiresIn: 120 * 120});
 
       res.status(200).json({
         id: candidate._id,

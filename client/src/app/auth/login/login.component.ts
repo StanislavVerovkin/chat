@@ -1,8 +1,7 @@
-import {Component, OnInit} from '@angular/core';
+import {AfterViewInit, Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {AuthService} from '../../shared/services/auth.service';
 import {ActivatedRoute, Params, Router} from '@angular/router';
-import {MatSnackBar} from '@angular/material';
 import {SnackBarService} from '../../shared/services/snack-bar.service';
 
 @Component({
@@ -10,7 +9,7 @@ import {SnackBarService} from '../../shared/services/snack-bar.service';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit, AfterViewInit {
 
   form: FormGroup;
   hide = true;
@@ -34,7 +33,9 @@ export class LoginComponent implements OnInit {
         Validators.minLength(6),
       ])
     });
+  }
 
+  ngAfterViewInit() {
     this.route.queryParams.subscribe((params: Params) => {
       if (params['accessDenied']) {
         this.snackBar.getSnackBarError('You should login to the chat');

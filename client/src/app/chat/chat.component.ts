@@ -1,10 +1,12 @@
-import {AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, HostListener, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {SocketService} from '../shared/services/socket.service';
 import {MessageModel} from '../models/message.model';
 import {UserModel} from '../models/user.model';
+import {Subject} from 'rxjs/internal/Subject';
+import {JwtHelperService} from '@auth0/angular-jwt';
+
 import {debounceTime, takeUntil, tap} from 'rxjs/operators';
 import {fromEvent} from 'rxjs/internal/observable/fromEvent';
-import {Subject} from 'rxjs/internal/Subject';
 
 @Component({
   selector: 'app-chat',
@@ -24,6 +26,7 @@ export class ChatComponent implements OnInit, OnDestroy {
   partnerIsTyping: { status: boolean, userName: string };
 
   isLoaded = false;
+  isExpiredToken: boolean;
 
   destroy: Subject<any> = new Subject<any>();
 
@@ -32,6 +35,13 @@ export class ChatComponent implements OnInit, OnDestroy {
   constructor(
     private socketService: SocketService,
   ) {
+  }
+
+  @HostListener('window:unload', ['$event'])
+  public handleUnload(event) {
+    if (this.isExpiredToken) {
+      this.logoutUser();
+    }
   }
 
   ngOnInit() {
@@ -49,8 +59,16 @@ export class ChatComponent implements OnInit, OnDestroy {
 
     this.socketService.addOrGetUser('getLoggedUsers')
       .subscribe((data: any[]) => {
+
         this.users = data;
         this.localStorage = JSON.parse(localStorage.getItem('token'));
+
+        if (this.localStorage !== null) {
+
+          const helper = new JwtHelperService();
+          this.isExpiredToken = helper.isTokenExpired(this.localStorage.token);
+
+        }
       });
 
     this.socketService.subscribeToChangeStatusMember()

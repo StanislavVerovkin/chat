@@ -35,7 +35,8 @@ if (process.env.NODE_ENV === 'production') {
         __dirname, 'client', 'dist', 'mychatapp', 'index.html'
       )
     )
-  })
+  });
+
 }
 
 module.exports = app;
