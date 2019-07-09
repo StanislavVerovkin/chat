@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {AuthService} from '../../shared/services/auth.service';
 import {Router} from '@angular/router';
+import {SnackBarService} from '../../shared/services/snack-bar.service';
 
 @Component({
   selector: 'app-register',
@@ -16,6 +17,7 @@ export class RegisterComponent implements OnInit {
   constructor(
     private authService: AuthService,
     private router: Router,
+    private snackBar: SnackBarService
   ) {
   }
 
@@ -50,12 +52,15 @@ export class RegisterComponent implements OnInit {
 
   onSubmit(user) {
     this.authService.register(user)
-      .subscribe(() => {
-        this.router.navigate(['/login'], {
-          queryParams: {
-            registered: true
-          }
-        });
-      });
+      .subscribe(
+        () => {
+          this.router.navigate(['/login'], {
+            queryParams: {
+              registered: true
+            }
+          });
+        },
+        error => this.snackBar.getSnackBarError(error.error.message)
+      );
   }
 }

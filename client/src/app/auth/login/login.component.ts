@@ -56,8 +56,9 @@ export class LoginComponent implements OnInit, AfterViewInit {
 
   onSubmit(user) {
     this.authService.login(user)
-      .subscribe(() => {
-        this.router.navigate(['/chat']);
-      });
+      .subscribe(
+        () => this.router.navigate(['/chat']),
+        error => this.snackBar.getSnackBarError(error.error.message)
+      );
   }
 }
