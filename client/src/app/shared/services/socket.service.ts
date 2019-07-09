@@ -34,7 +34,7 @@ export class SocketService {
     return this.socket.fromEvent<UserModel[]>('users');
   }
 
-  removeLoggedUser(id) {
+  changeLoginStatus(id) {
     this.socket.emit('logout', id);
     this.router.navigate(['/login']);
   }

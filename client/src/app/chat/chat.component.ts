@@ -26,7 +26,7 @@ export class ChatComponent implements OnInit, OnDestroy, AfterViewInit {
   partnerIsTyping: { status: boolean, userName: string };
 
   isLoaded = false;
-  isExpiredToken: boolean;
+  isTokenExpired: boolean;
 
   destroy: Subject<any> = new Subject<any>();
 
@@ -39,7 +39,7 @@ export class ChatComponent implements OnInit, OnDestroy, AfterViewInit {
 
   @HostListener('window:unload', ['$event'])
   public handleUnload(event) {
-    if (this.isExpiredToken) {
+    if (this.isTokenExpired) {
       this.logoutUser();
     }
   }
@@ -72,7 +72,7 @@ export class ChatComponent implements OnInit, OnDestroy, AfterViewInit {
 
   ngAfterViewInit() {
     this.userStorage = JSON.parse(localStorage.getItem('token'));
-    this.isExpiredToken = new JwtHelperService().isTokenExpired(this.userStorage.token);
+    this.isTokenExpired = new JwtHelperService().isTokenExpired(this.userStorage.token);
   }
 
   chatSend(theirMessage: string) {
@@ -87,7 +87,7 @@ export class ChatComponent implements OnInit, OnDestroy, AfterViewInit {
   logoutUser() {
     this.getUniqueUser();
     this.uniqueUser.forEach((user) => {
-      this.socketService.removeLoggedUser(user._id);
+      this.socketService.changeLoginStatus(user._id);
       localStorage.removeItem('token');
     });
   }
