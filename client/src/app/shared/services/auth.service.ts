@@ -25,7 +25,6 @@ export class AuthService {
       .pipe(
         tap((data: any) => {
           localStorage.setItem('token', JSON.stringify(data));
-          this.socketService.addOrGetUser('addLoggedUser', data);
         })
       );
   }

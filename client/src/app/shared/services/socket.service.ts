@@ -29,8 +29,8 @@ export class SocketService {
     this.socket.emit('removeMessage', {id});
   }
 
-  addOrGetUser(eventName, data?): Observable<UserModel[]> {
-    this.socket.emit(eventName, data);
+  getLoggedUsers(): Observable<UserModel[]> {
+    this.socket.emit('getUsers');
     return this.socket.fromEvent<UserModel[]>('users');
   }
 

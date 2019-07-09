@@ -1,4 +1,4 @@
-import {Component, ElementRef, HostListener, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, HostListener, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {SocketService} from '../shared/services/socket.service';
 import {MessageModel} from '../models/message.model';
 import {UserModel} from '../models/user.model';
@@ -13,7 +13,7 @@ import {fromEvent} from 'rxjs/internal/observable/fromEvent';
   templateUrl: './chat.component.html',
   styleUrls: ['./chat.component.css']
 })
-export class ChatComponent implements OnInit, OnDestroy {
+export class ChatComponent implements OnInit, OnDestroy, AfterViewInit {
 
   msgVal = '';
   messages: MessageModel[];
@@ -45,30 +45,23 @@ export class ChatComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-
     this.partnerIsTyping = {status: false, userName: null};
+
     this.subscribeToTyping();
 
     this.isLoaded = true;
 
-    this.socketService.getMessages()
-      .subscribe((data: MessageModel[]) => {
-        this.messages = data;
-        this.isLoaded = false;
+    this.socketService.getLoggedUsers()
+      .subscribe((users) => {
+        this.users = users.filter((user) => {
+          return user.isLogin;
+        });
       });
 
-    this.socketService.addOrGetUser('getLoggedUsers')
-      .subscribe((data: any[]) => {
-
-        this.users = data;
-        this.localStorage = JSON.parse(localStorage.getItem('token'));
-
-        if (this.localStorage !== null) {
-
-          const helper = new JwtHelperService();
-          this.isExpiredToken = helper.isTokenExpired(this.localStorage.token);
-
-        }
+    this.socketService.getMessages()
+      .subscribe((messages: MessageModel[]) => {
+        this.messages = messages;
+        this.isLoaded = false;
       });
 
     this.socketService.subscribeToChangeStatusMember()
@@ -77,23 +70,24 @@ export class ChatComponent implements OnInit, OnDestroy {
       });
   }
 
+  ngAfterViewInit() {
+    this.localStorage = JSON.parse(localStorage.getItem('token'));
+    this.isExpiredToken = new JwtHelperService().isTokenExpired(this.localStorage.token);
+  }
+
   chatSend(theirMessage: string) {
-
     this.getUniqueUser();
-
-    this.uniqueUser.forEach((element) => {
-      this.socketService.newMessage(theirMessage, element.name);
+    this.uniqueUser.forEach((user) => {
+      this.socketService.newMessage(theirMessage, user.name);
       this.isLoaded = true;
       this.msgVal = '';
     });
   }
 
   logoutUser() {
-
     this.getUniqueUser();
-
-    this.uniqueUser.forEach((element) => {
-      this.socketService.removeLoggedUser(element._id);
+    this.uniqueUser.forEach((user) => {
+      this.socketService.removeLoggedUser(user._id);
       localStorage.removeItem('token');
     });
   }
@@ -104,22 +98,17 @@ export class ChatComponent implements OnInit, OnDestroy {
   }
 
   getUniqueUser() {
-    this.uniqueUser = this.users.filter((element) => {
-      return element.token === this.localStorage.token;
+    this.uniqueUser = this.users.filter((user) => {
+      return user.name === this.localStorage.name;
     });
   }
 
-  getColorUser(authToken) {
-    if (authToken === this.localStorage.token) {
+  getColorUser(name) {
+    if (name === this.localStorage.name) {
       return '#816A98';
     } else {
       return 'gainsboro';
     }
-  }
-
-  ngOnDestroy() {
-    this.destroy.next();
-    this.destroy.unsubscribe();
   }
 
   subscribeToTyping() {
@@ -139,5 +128,10 @@ export class ChatComponent implements OnInit, OnDestroy {
         }
       }),
     ).subscribe();
+  }
+
+  ngOnDestroy() {
+    this.destroy.next();
+    this.destroy.unsubscribe();
   }
 }

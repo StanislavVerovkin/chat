@@ -22,7 +22,7 @@
     <mat-list>
       <mat-list-item *ngFor="let user of users">
         <h3
-          [ngStyle]="{'color': getColorUser(user.token)}"
+          [ngStyle]="{'color': getColorUser(user.name)}"
           matLine
         >
           {{user.name}}
@@ -52,6 +52,7 @@
             </div>
             <div class="image">
               <img
+                *ngIf="data.name === localStorage.name"
                 (click)="removeMessage(data._id)"
                 src="https://image.flaticon.com/icons/svg/579/579006.svg"
               >

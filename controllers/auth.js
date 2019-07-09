@@ -12,6 +12,11 @@ module.exports.login = async (req, res) => {
 
     if (bcrypt.compareSync(req.body.password, candidate.password)) {
 
+      User.findByIdAndUpdate(candidate._id, {isLogin: true}, (err, user) => {
+        if (err) return console.log(err);
+        console.log("Обновленный объект", user);
+      });
+
       const token = jwt.sign({
         email: candidate.email,
         userId: candidate._id,
@@ -21,6 +26,7 @@ module.exports.login = async (req, res) => {
         id: candidate._id,
         email: candidate.email,
         name: candidate.name,
+        isLogin: true,
         token: `Bearer ${token}`
       })
     } else {
@@ -49,6 +55,7 @@ module.exports.register = async (req, res) => {
     const user = new User({
       name: req.body.name,
       email: req.body.email,
+      isLogin: false,
       password: bcrypt.hashSync(password, salt),
     });
     try {

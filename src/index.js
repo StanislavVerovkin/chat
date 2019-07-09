@@ -4,11 +4,11 @@ const io = require('socket.io')(http);
 const port = process.env.PORT || 4444;
 
 const Message = require('../models/Message');
-const LoggedUser = require('../models/LoggedUsers');
+const User = require('../models/User');
 
 io.on('connection', socket => {
 
-  socket.on("addMessage", data => {
+  socket.on('addMessage', data => {
     Message({
       message: data.message,
       name: data.name
@@ -23,12 +23,12 @@ io.on('connection', socket => {
 
   socket.on('getMessages', () => {
     Message.find({})
-      .then((data) => {
-        io.emit("messages", data);
+      .then((messages) => {
+        io.emit("messages", messages);
       })
   });
 
-  socket.on("removeMessage", data => {
+  socket.on('removeMessage', data => {
     Message.findByIdAndRemove(data.id, () => {
       Message.find({})
         .then((data) => {
@@ -37,29 +37,23 @@ io.on('connection', socket => {
     })
   });
 
-  socket.on("addLoggedUser", data => {
-    LoggedUser({
-      email: data.email,
-      name: data.name,
-      token: data.token
-    }).save();
-  });
-
-  socket.on("getLoggedUsers", () => {
-    LoggedUser.find({})
+  socket.on('getUsers', () => {
+    User.find({})
       .then((data) => {
-        io.emit("users", data);
+        io.emit('users', data)
       })
   });
 
-  socket.on("logout", (id) => {
-    LoggedUser.deleteOne({_id: id})
-      .then(() => {
-        LoggedUser.find({})
-          .then((data) => {
-            io.emit("users", data);
-          });
-      })
+  socket.on('logout', (id) => {
+    User.findByIdAndUpdate(id, {isLogin: false}, (err) => {
+      if (err) {
+        return console.log(err);
+      }
+      User.find({isLogin: true})
+        .then((data) => {
+          io.emit('users', data);
+        })
+    });
   });
 
   socket.on('typing', data => {
