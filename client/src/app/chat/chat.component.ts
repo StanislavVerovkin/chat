@@ -20,7 +20,7 @@ export class ChatComponent implements OnInit, OnDestroy, AfterViewInit {
 
   users: UserModel[];
   uniqueUser: UserModel[];
-  localStorage: UserModel;
+  userStorage: UserModel;
 
   startTyping = false;
   partnerIsTyping: { status: boolean, userName: string };
@@ -71,8 +71,8 @@ export class ChatComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    this.localStorage = JSON.parse(localStorage.getItem('token'));
-    this.isExpiredToken = new JwtHelperService().isTokenExpired(this.localStorage.token);
+    this.userStorage = JSON.parse(localStorage.getItem('token'));
+    this.isExpiredToken = new JwtHelperService().isTokenExpired(this.userStorage.token);
   }
 
   chatSend(theirMessage: string) {
@@ -99,15 +99,15 @@ export class ChatComponent implements OnInit, OnDestroy, AfterViewInit {
 
   getUniqueUser() {
     this.uniqueUser = this.users.filter((user) => {
-      return user.name === this.localStorage.name;
+      return user.name === this.userStorage.name;
     });
   }
 
   getColorUser(name) {
-    if (name === this.localStorage.name) {
+    if (name === this.userStorage.name) {
       return '#816A98';
     } else {
-      return 'gainsboro';
+      return '#FFF';
     }
   }
 
@@ -116,14 +116,14 @@ export class ChatComponent implements OnInit, OnDestroy, AfterViewInit {
       takeUntil(this.destroy),
       tap(() => {
         if (!this.startTyping) {
-          this.socketService.sendStatusIsTyping(true, this.localStorage.name);
+          this.socketService.sendStatusIsTyping(true, this.userStorage.name);
           this.startTyping = true;
         }
       }),
       debounceTime(3000),
       tap(() => {
         if (this.startTyping) {
-          this.socketService.sendStatusIsTyping(false, this.localStorage.name);
+          this.socketService.sendStatusIsTyping(false, this.userStorage.name);
           this.startTyping = false;
         }
       }),

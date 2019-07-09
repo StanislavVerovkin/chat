@@ -52,7 +52,7 @@
             </div>
             <div class="image">
               <img
-                *ngIf="data.name === localStorage.name"
+                *ngIf="data.name === userStorage.name"
                 (click)="removeMessage(data._id)"
                 src="https://image.flaticon.com/icons/svg/579/579006.svg"
               >
