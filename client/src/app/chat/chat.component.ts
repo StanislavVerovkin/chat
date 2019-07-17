@@ -104,11 +104,7 @@ export class ChatComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   getColorUser(name) {
-    if (name === this.userStorage.name) {
-      return '#816A98';
-    } else {
-      return '#FFF';
-    }
+    return name === this.userStorage.name ? '#816A98' : '#FFF';
   }
 
   subscribeToTyping() {

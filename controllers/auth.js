@@ -12,9 +12,8 @@ module.exports.login = async (req, res) => {
 
     if (bcrypt.compareSync(req.body.password, candidate.password)) {
 
-      User.findByIdAndUpdate(candidate._id, {isLogin: true}, (err, user) => {
+      User.findByIdAndUpdate(candidate._id, {isLogin: true}, (err) => {
         if (err) return console.log(err);
-        console.log("Обновленный объект", user);
       });
 
       const token = jwt.sign({
