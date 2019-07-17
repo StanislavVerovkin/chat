@@ -8,6 +8,10 @@
   width: 65%;
 }
 
+.pencil {
+  padding-right: 10px;
+}
+
 input#message {
   background: none;
   border: none;
@@ -75,7 +79,7 @@ img {
   width: 15px;
 }
 
-img:hover {
+.remove:hover {
   animation: spin 2s;
 }
 

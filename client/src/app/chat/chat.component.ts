@@ -7,6 +7,8 @@ import {JwtHelperService} from '@auth0/angular-jwt';
 
 import {debounceTime, takeUntil, tap} from 'rxjs/operators';
 import {fromEvent} from 'rxjs/internal/observable/fromEvent';
+import {MatDialog} from "@angular/material";
+import {EditMessageComponent} from "./edit-message/edit-message.component";
 
 @Component({
   selector: 'app-chat',
@@ -34,6 +36,7 @@ export class ChatComponent implements OnInit, OnDestroy, AfterViewInit {
 
   constructor(
     private socketService: SocketService,
+    public dialog: MatDialog
   ) {
   }
 
@@ -95,6 +98,13 @@ export class ChatComponent implements OnInit, OnDestroy, AfterViewInit {
   removeMessage(id) {
     this.isLoaded = true;
     this.socketService.deleteMessage(id);
+  }
+
+  editMessage(id) {
+    this.dialog.open(EditMessageComponent, {
+      width: '1200px',
+      data: id
+    });
   }
 
   getUniqueUser() {

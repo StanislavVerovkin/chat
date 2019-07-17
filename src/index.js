@@ -16,7 +16,7 @@ io.on('connection', socket => {
       .then(() => {
         Message.find({})
           .then(data => {
-            io.emit("messages", data);
+            io.emit('messages', data);
           });
       });
   });
@@ -24,7 +24,25 @@ io.on('connection', socket => {
   socket.on('getMessages', () => {
     Message.find({})
       .then((messages) => {
-        io.emit("messages", messages);
+        io.emit('messages', messages);
+      })
+  });
+
+  socket.on('getMessageById', (id) => {
+    Message.findOne({_id: id})
+      .then((message) => {
+        io.emit('message', message)
+      })
+  });
+
+  socket.on('updateMessageById', (data) => {
+    Message.findByIdAndUpdate(data.id, {message: data.message}, (err) => {
+      if (err) {
+        return console.log(err);
+      }
+    })
+      .then(data => {
+        io.emit('message', data.message)
       })
   });
 

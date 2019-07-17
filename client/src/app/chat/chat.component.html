@@ -52,6 +52,13 @@
             </div>
             <div class="image">
               <img
+                class="pencil"
+                *ngIf="data.name === userStorage.name"
+                (click)="editMessage(data._id)"
+                src="https://image.flaticon.com/icons/svg/214/214331.svg"
+              >
+              <img
+                class="remove"
                 *ngIf="data.name === userStorage.name"
                 (click)="removeMessage(data._id)"
                 src="https://image.flaticon.com/icons/svg/579/579006.svg"

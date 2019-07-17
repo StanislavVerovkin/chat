@@ -25,6 +25,16 @@ export class SocketService {
     return this.socket.fromEvent<MessageModel[]>('messages');
   }
 
+  getMessageById(id): Observable<MessageModel> {
+    this.socket.emit('getMessageById', id);
+    return this.socket.fromEvent<MessageModel>('message');
+  }
+
+  updateMessageById(id, message): Observable<MessageModel> {
+    this.socket.emit('updateMessageById', {id: id, message: message});
+    return this.socket.fromEvent<MessageModel>('message');
+  }
+
   deleteMessage(id) {
     this.socket.emit('removeMessage', {id});
   }

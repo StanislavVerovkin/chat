@@ -1,0 +1,9 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit(form.value)">
+  <mat-form-field>
+    <input formControlName="message" matInput/>
+  </mat-form-field>
+  <div class="buttons" mat-dialog-actions>
+    <button mat-button (click)="onNoClick()">Close</button>
+    <button mat-button>Edit</button>
+  </div>
+</form>

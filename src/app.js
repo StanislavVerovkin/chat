@@ -11,10 +11,8 @@ app.use(cors());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 
-const messageRoutes = require('../routes/messages');
 const authRoutes = require('../routes/auth');
 
-app.use('/api/messages', messageRoutes);
 app.use('/api/auth', authRoutes);
 
 mongoose.set('useNewUrlParser', true);
