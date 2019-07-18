@@ -12,7 +12,6 @@ export class AuthService {
 
   constructor(
     private http: HttpClient,
-    private socketService: SocketService,
   ) {
   }
 
@@ -23,7 +22,7 @@ export class AuthService {
   login(user: UserModel): Observable<UserModel> {
     return this.http.post<UserModel>('/api/auth/login', user)
       .pipe(
-        tap((data: any) => {
+        tap((data: UserModel) => {
           localStorage.setItem('token', JSON.stringify(data));
         })
       );
