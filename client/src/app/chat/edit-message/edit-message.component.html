@@ -3,7 +3,7 @@
     <input formControlName="message" matInput/>
   </mat-form-field>
   <div class="buttons" mat-dialog-actions>
-    <button mat-button (click)="onNoClick()">Close</button>
-    <button mat-button>Edit</button>
+    <button type="button" mat-button (click)="onNoClick()">Close</button>
+    <button type="submit" [disabled]="form.invalid" mat-button>Edit</button>
   </div>
 </form>

@@ -27,7 +27,6 @@ export class EditMessageComponent implements OnInit {
         Validators.required
       ])
     });
-
     this.socketService.getMessageById(this.data)
       .subscribe((data) => {
         this.form.patchValue({
