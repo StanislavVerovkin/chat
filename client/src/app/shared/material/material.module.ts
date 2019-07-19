@@ -1,10 +1,18 @@
 import {NgModule} from '@angular/core';
 import {
-  MatButtonModule, MatCardModule,
-  MatCheckboxModule, MatDialogModule,
-  MatFormFieldModule, MatIconModule,
-  MatInputModule, MatListModule, MatProgressBarModule, MatProgressSpinnerModule, MatSidenavModule,
-  MatSnackBarModule, MatToolbarModule
+  MatButtonModule,
+  MatCardModule,
+  MatCheckboxModule,
+  MatDialogModule,
+  MatFormFieldModule,
+  MatIconModule,
+  MatInputModule,
+  MatListModule,
+  MatProgressBarModule,
+  MatProgressSpinnerModule,
+  MatSidenavModule,
+  MatSnackBarModule,
+  MatToolbarModule
 } from '@angular/material';
 
 @NgModule({

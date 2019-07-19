@@ -36,7 +36,6 @@ const config: SocketIoConfig = {url: 'http://localhost:4444', options: {}};
     SocketIoModule.forRoot(config),
     AppRoutingModule,
   ],
-  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule {

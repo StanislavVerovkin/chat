@@ -31,7 +31,7 @@ export class SocketService {
   }
 
   updateMessageById(id, message): Observable<MessageModel> {
-    this.socket.emit('updateMessageById', {id: id, message: message});
+    this.socket.emit('updateMessageById', {id, message});
     return this.socket.fromEvent<MessageModel>('message');
   }
 
