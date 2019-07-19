@@ -13,12 +13,6 @@ io.on('connection', socket => {
       message: data.message,
       name: data.name
     }).save()
-      .then(() => {
-        Message.find({})
-          .then(data => {
-            io.emit('messages', data);
-          });
-      });
   });
 
   socket.on('getMessages', () => {

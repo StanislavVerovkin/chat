@@ -5,10 +5,10 @@ import {UserModel} from '../models/user.model';
 import {Subject} from 'rxjs/internal/Subject';
 import {JwtHelperService} from '@auth0/angular-jwt';
 
-import {debounceTime, takeUntil, tap} from 'rxjs/operators';
+import {debounceTime, switchMap, takeUntil, tap} from 'rxjs/operators';
 import {fromEvent} from 'rxjs/internal/observable/fromEvent';
-import {MatDialog} from "@angular/material";
-import {EditMessageComponent} from "./edit-message/edit-message.component";
+import {MatDialog} from '@angular/material';
+import {EditMessageComponent} from './edit-message/edit-message.component';
 
 @Component({
   selector: 'app-chat',
@@ -82,6 +82,7 @@ export class ChatComponent implements OnInit, OnDestroy, AfterViewInit {
     this.getUniqueUser();
     this.uniqueUser.forEach((user) => {
       this.socketService.newMessage(theirMessage, user.name);
+      this.socketService.getMessages();
       this.isLoaded = true;
       this.msgVal = '';
     });
