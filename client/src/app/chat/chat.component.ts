@@ -82,7 +82,6 @@ export class ChatComponent implements OnInit, OnDestroy, AfterViewInit {
     this.getUniqueUser();
     this.uniqueUser.forEach((user) => {
       this.socketService.newMessage(theirMessage, user.name);
-      this.socketService.getMessages();
       this.isLoaded = true;
       this.msgVal = '';
     });
